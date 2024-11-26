@@ -1,26 +1,13 @@
 package main
 
 import (
+	"github.com/spayder/url-shortener/internal/handlers"
 	"log"
 	"net/http"
-	"text/template"
 )
 
 func main() {
-	http.HandleFunc("/", showHomePage)
+	http.HandleFunc("/", handlers.Show)
+	http.HandleFunc("/shorten", handlers.ShortenHandler)
 	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
-func showHomePage(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("internal/views/index.html")
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
-
-	err = tmpl.Execute(w, nil)
-	if err != nil {
-		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return
-	}
 }
