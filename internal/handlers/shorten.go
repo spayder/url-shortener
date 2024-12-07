@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/spayder/url-shortener/internal/url"
 	"html/template"
 	"net/http"
 	"strings"
@@ -21,8 +22,10 @@ func ShortenHandler(w http.ResponseWriter, r *http.Request) {
 		originalUrl = "https://" + originalUrl
 	}
 
+	hashedUrl := url.Shorten(originalUrl)
+
 	data := map[string]string{
-		"ShortURL": originalUrl,
+		"ShortURL": hashedUrl,
 	}
 
 	t, err := template.ParseFiles("internal/views/shorten.html")
